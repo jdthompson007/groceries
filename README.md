@@ -7,7 +7,7 @@ Version: 1.0
 Purpose - to read a HTML page of grocery items and return the result as JSON data
 
 IDE used: Eclipse STS 3.83
-Dependencies: Java 8 must be installed in order to run the application
+Dependencies: Java 8 JDK must be installed in order to run the application (the JRE is not enough as the tools JAR is required)
 Build tool: gradle 4.0.2 (now using gradle wrapper so gradle needn't be installed to build and run)
 
 To compile from the command line run: build.bat on Windows or ./build.sh on unix 
