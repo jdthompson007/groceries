@@ -1,12 +1,10 @@
 package groceries.services;
 
-import java.io.File;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import groceries.domain.GroceryResult;
 
@@ -16,12 +14,10 @@ import groceries.domain.GroceryResult;
 public class ScraperServiceTest {
 
 	private ScraperService scraperService;
-	private JsonService jsonService;
 	
 	@Before
 	public void setup() {
 		scraperService = new ScraperService();
-		jsonService = new JsonService();
 	}
 	
 	@Test
@@ -29,19 +25,9 @@ public class ScraperServiceTest {
 		// GIVEN there is a product page to scrape
 		// WHEN the screen is scraped
 		GroceryResult groceryResult = scraperService.getGroceryResult();
-		String actualJson = jsonService.convertGroceryResultToJson(groceryResult);
 		
-		// THEN the expected JSON will match the actual JSON
-		GroceryResult expectedGroceryResult = getExpectedResult();
-		String expectedJson = jsonService.convertGroceryResultToJson(expectedGroceryResult);
-		
-		JSONAssert.assertEquals(expectedJson, actualJson, false);
-	}
-	
-	private GroceryResult getExpectedResult() throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
-		//JSON from file to Object
-		ClassLoader classLoader = getClass().getClassLoader();
-		return (GroceryResult) mapper.readValue(new File(classLoader.getResource("expectedProducts.json").getFile()), GroceryResult.class);
+		// THEN the correct grocery result will be returned
+		assertThat(groceryResult.getResults().size() > 0, equalTo(true));
+		assertThat(groceryResult.getTotal().toString(), equalTo("39.50"));		
 	}
 }
