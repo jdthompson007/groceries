@@ -23,23 +23,13 @@ public class ProductListPage {
 	public List<Grocery> getGroceries() throws Exception {
 		
 		Document doc = Jsoup.connect(url).get();
-		
-		// System.out.println("HTML\n\n" + doc.html());
-		
 		Elements products = doc.select("div.product");
 		
 		List<Grocery> groceries = new ArrayList<>();
-		// System.out.println("PRODUCTS");
 		for (Element product: products) {			
-			// System.out.println(product.html());
 			Grocery grocery = getGrocery(product);
 			groceries.add(grocery);
 		}
-
-		// TODO remove
-//		for (Grocery grocery: groceries) {
-//			System.out.println(grocery.toString());			
-//		}
 		
 		return groceries;
 	}
@@ -51,8 +41,8 @@ public class ProductListPage {
 		grocery.setPrice(new BigDecimal(getProductUnitPrice(product)));
 		
 		ProductPage productPage = new ProductPage(getProductPageUrl(product));
-		grocery.setDescription(productPage.getProductDescription());
-		grocery.setCalories(productPage.getProductCalories());
+		grocery.setDescription(productPage.getDescription());
+		grocery.setCalories(productPage.getCalories());
 		
 		return grocery;
 	}
