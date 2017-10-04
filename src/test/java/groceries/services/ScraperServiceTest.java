@@ -1,7 +1,12 @@
 package groceries.services;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import groceries.domain.GroceryResult;
 
@@ -21,10 +26,22 @@ public class ScraperServiceTest {
 	
 	@Test
 	public void testScrapePage() throws Exception {		
-		// TODO complete		
+		// GIVEN there is a product page to scrape
+		// WHEN the screen is scraped
 		GroceryResult groceryResult = scraperService.getGroceryResult();
-		String json = jsonService.convertGroceryResultToJson(groceryResult);
+		String actualJson = jsonService.convertGroceryResultToJson(groceryResult);
 		
-		System.out.println("RESULT\n" + json);
+		// THEN the expected JSON will match the actual JSON
+		GroceryResult expectedGroceryResult = getExpectedResult();
+		String expectedJson = jsonService.convertGroceryResultToJson(expectedGroceryResult);
+		
+		JSONAssert.assertEquals(expectedJson, actualJson, false);
+	}
+	
+	private GroceryResult getExpectedResult() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		//JSON from file to Object
+		ClassLoader classLoader = getClass().getClassLoader();
+		return (GroceryResult) mapper.readValue(new File(classLoader.getResource("expectedProducts.json").getFile()), GroceryResult.class);
 	}
 }

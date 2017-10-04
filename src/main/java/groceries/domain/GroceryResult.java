@@ -7,6 +7,7 @@ import java.util.List;
 public class GroceryResult {
 
 	private List<Grocery> results = new ArrayList<>();	
+	private BigDecimal total;
 	
 	public List<Grocery> getResults() {
 		return results;
@@ -18,12 +19,20 @@ public class GroceryResult {
 	
 	public BigDecimal getTotal() {
 		
-		BigDecimal total = new BigDecimal(0);
+		if (total != null) {
+			return total;
+		}
+		
+		total = new BigDecimal(0);
 		
 		for (Grocery grocery: results) {
 			total = total.add(grocery.getPrice());
 		}
 		
 		return total;
+	}
+	
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
 }
